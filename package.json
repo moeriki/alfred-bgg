@@ -1,0 +1,7 @@
+{
+  "name": "boardgamegeek",
+  "version": "1.0.0",
+  "author": "Dieter Luypaert <dieterluypaert@gmail.com>",
+  "main": "index.js",
+  "license": "MIT"
+}
