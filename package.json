@@ -14,6 +14,7 @@
   },
   "scripts": {
     "lint": "eslint --cache --fix index.js",
+    "test": "yarn lint",
     "init": "alfy-init",
     "postinstall": "alfy-init",
     "preuninstall": "alfy-cleanup"
