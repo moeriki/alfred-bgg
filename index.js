@@ -22,7 +22,7 @@ const { find, getOr } = require('lodash/fp');
  * @param {string} href	eg. '/boardgame/174430/gloomhaven'
  */
 
-const COUNT = 3;
+const COUNT = 7;
 
 const gameUrl = (locationPath) =>
   `https://www.boardgamegeek.com${locationPath}`;
