@@ -1,11 +1,23 @@
 {
-  "name": "boardgamegeek",
+  "name": "alfred-bgg",
   "version": "1.0.0",
+  "description": "Search boardgamegeek.com from the comfort of Alfred",
   "author": "Dieter Luypaert <dieterluypaert@gmail.com>",
   "main": "index.js",
   "license": "MIT",
+  "engines": {
+    "node": ">=12.3"
+  },
   "scripts": {
-    "lint": "eslint --cache --fix index.js"
+    "lint": "eslint --cache --fix index.js",
+    "init": "alfy-init",
+    "postinstall": "alfy-init",
+    "preuninstall": "alfy-cleanup"
+  },
+  "dependencies": {
+    "alfy": "*",
+    "got": "^9.6.0",
+    "lodash": "^4.17.15"
   },
   "devDependencies": {
     "eslint": "^6.5.1",
