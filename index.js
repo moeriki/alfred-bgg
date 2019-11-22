@@ -40,8 +40,8 @@ const searchHtmlUrl = (query) =>
 const searchImagesUrl = (objectid) =>
   `https://api.geekdo.com/api/images?galleries%5B%5D=game&nosession=1&objectid=${objectid}&objecttype=thing&showcount=99&size=crop100&sort=hot`;
 
-async function findImageFilepath({ objectid, rep_imageid }) {
-  const cacheKey = String(rep_imageid);
+async function findImageFilepath({ objectId, repImageId }) {
+  const cacheKey = String(repImageId);
   const cachedImageImageFilepath = await alfy.cache.get(cacheKey);
   if (cachedImageImageFilepath) {
     return cachedImageImageFilepath;
@@ -49,13 +49,13 @@ async function findImageFilepath({ objectid, rep_imageid }) {
   const images = getOr(
     [],
     'images',
-    await alfy.fetch(searchImagesUrl(objectid)),
+    await alfy.fetch(searchImagesUrl(objectId)),
   );
-  const image = find({ imageid: String(rep_imageid) }, images);
+  const image = find({ imageid: String(repImageId) }, images);
   if (!image) {
     return undefined;
   }
-  const imageCacheFilepath = path.join(__dirname, `.cache/${rep_imageid}.png`);
+  const imageCacheFilepath = path.join(__dirname, `.cache/${repImageId}.png`);
   const writeStream = got
     .stream(image.imageurl)
     .pipe(fs.createWriteStream(imageCacheFilepath));
@@ -73,18 +73,26 @@ async function findImageFilepath({ objectid, rep_imageid }) {
   alfy.output(
     await Promise.all(
       data.items
-        .map(async ({ href, name, objectid, rep_imageid, yearpublished }) => {
-          const imageFilepath = await findImageFilepath({
-            objectid,
-            rep_imageid,
-          });
-          return {
-            arg: gameUrl(href),
-            icon: imageFilepath ? { path: imageFilepath } : undefined,
-            subtitle: `${yearpublished}`,
-            title: `${name}`,
-          };
-        })
+        .map(
+          async ({
+            href,
+            name,
+            objectid: objectId,
+            rep_imageid: repImageId,
+            yearpublished,
+          }) => {
+            const imageFilepath = await findImageFilepath({
+              objectId,
+              repImageId,
+            });
+            return {
+              arg: gameUrl(href),
+              icon: imageFilepath ? { path: imageFilepath } : undefined,
+              subtitle: `${yearpublished}`,
+              title: `${name}`,
+            };
+          },
+        )
         .concat([
           {
             arg: searchHtmlUrl(alfy.input),
