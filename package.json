@@ -1,6 +1,6 @@
 {
   "name": "alfred-bgg",
-  "version": "1.0.1",
+  "version": "1.0.2",
   "description": "Search boardgamegeek.com from the comfort of Alfred",
   "author": "Dieter Luypaert <dieterluypaert@gmail.com>",
   "main": "index.js",
