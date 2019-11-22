@@ -1,5 +1,6 @@
 const fs = require('fs');
 const path = require('path');
+const os = require('os');
 
 const alfy = require('alfy');
 const got = require('got');
@@ -44,7 +45,10 @@ async function findImageFilepath({ objectId, repImageId }) {
   const cacheKey = String(repImageId);
   const cachedImageImageFilepath = await alfy.cache.get(cacheKey);
   if (cachedImageImageFilepath) {
-    return cachedImageImageFilepath;
+    if (await fs.promises.access(cachedImageImageFilepath, fs.constants.R_OK)) {
+      return cachedImageImageFilepath;
+    }
+    await alfy.cache.delete(cacheKey);
   }
   const images = getOr(
     [],
@@ -55,7 +59,7 @@ async function findImageFilepath({ objectId, repImageId }) {
   if (!image) {
     return undefined;
   }
-  const imageCacheFilepath = path.join(__dirname, `.cache/${repImageId}.png`);
+  const imageCacheFilepath = path.join(os.tmpdir(), `${repImageId}.png`);
   const writeStream = got
     .stream(image.imageurl)
     .pipe(fs.createWriteStream(imageCacheFilepath));
